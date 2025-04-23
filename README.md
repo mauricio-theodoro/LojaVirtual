@@ -1,142 +1,180 @@
-Loja Virtual
+# 🛍️ Loja Virtual
 
-✨ Descrição
+## 📌 Descrição
 
-O projeto Loja Virtual é uma aplicação web desenvolvida com Spring Boot que permite o gerenciamento de produtos e categorias utilizando MariaDB como banco de dados relacional. A aplicação oferece operações CRUD completas por meio de uma API RESTful, estruturada com boas práticas de arquitetura, separando claramente as camadas de Controller, Service e Repository.
+O projeto **Loja Virtual** é uma aplicação web desenvolvida com **Spring Boot** que gerencia produtos e categorias utilizando persistência de dados com **MariaDB**. A aplicação oferece operações CRUD por meio de uma API RESTful e adota boas práticas de arquitetura, com separação entre as camadas de `Controller`, `Service` e `Repository`.
 
-Este projeto foi desenvolvido como parte de uma avaliação acadêmica com foco em mapeamento JPA e integração com banco de dados relacional.
+Este projeto foi criado para fins acadêmicos, com foco na correta aplicação do JPA e integração com banco de dados relacional.
 
-🫠 Tecnologias Utilizadas
+---
 
-Java 11+
+## ⚙️ Tecnologias Utilizadas
 
-Spring Boot 3.x
+- Java 11+
+- Spring Boot 3.x
+- Spring Data JPA & Hibernate
+- MariaDB (via MariaDB JDBC Driver)
+- Maven
 
-Spring Data JPA + Hibernate
+---
 
-MariaDB (com o driver MariaDB JDBC)
+## ✅ Pré-requisitos
 
-Maven
+- Java JDK 11 ou superior
+- Maven instalado
+- MariaDB instalado (pode ser via XAMPP, Docker ou standalone)
 
-✅ Pré-requisitos
+---
 
-Java SDK 11 ou superior instalado
+## 🛠️ Instalação e Configuração
 
-Maven instalado e configurado
+### 1. Instale o MariaDB
 
-Servidor MariaDB (pode ser instalado separadamente ou via XAMPP)
+Você pode baixar diretamente do [site oficial do MariaDB](https://mariadb.org/download/) ou instalar via XAMPP (recomendado para iniciantes).
 
-⚙️ Instalação e Configuração do Banco de Dados
+### 2. Crie o banco de dados
 
-1. Instale o MariaDB
+Acesse o console do MariaDB e execute:
 
-Baixe do site oficial do MariaDB, ou use o XAMPP para instalação rápida.
-
-2. Crie o banco de dados
-
+```sql
 CREATE DATABASE lojadigitaldb
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
+```
 
-3. Configure o application.yml
+### 3. Configure a conexão no `application.yml`
 
-Arquivo localizado em: LojaVirtual/src/main/resources/application.yml
-
+```yaml
 spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/lojadigitaldb
     username: root
-    password:
+    password: your_password_here
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-   
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
 
-⚠️ Substitua your_password_here pela senha correta do seu banco de dados.
+server:
+  port: 8080
 
-📁 Estrutura do Projeto
+spring:
+  sql:
+    init:
+      mode: always
+```
 
+> 💡 Substitua `your_password_here` pela sua senha do MariaDB.
+
+---
+
+## 🗂️ Estrutura do Projeto
+
+```
 LojaVirtual/
-├── pom.xml                  # Arquivo de configuração do Maven
-├── mvnw, mvnw.cmd          # Maven Wrapper
-├── .mvn/                   # Configurações do Maven Wrapper
+├── pom.xml                      # Configuração do Maven
+├── mvnw, mvnw.cmd              # Maven Wrapper
+├── .mvn/                       # Configurações do Maven
 ├── src/
 │   ├── main/
 │   │   ├── java/com/lojadigital/
-│   │   │   ├── controller/    # Endpoints REST
-│   │   │   ├── model/         # Entidades: Produto, Categoria
-│   │   │   ├── repository/    # Interfaces JPA
-│   │   │   └── service/       # Regras de negócio
+│   │   │   ├── controller/     # Endpoints REST
+│   │   │   ├── model/          # Entidades JPA
+│   │   │   ├── repository/     # Interfaces do Spring Data
+│   │   │   └── service/        # Lógica de negócio
 │   │   └── resources/
-│   │       └── application.yml
-│   └── test/                  # Testes unitários (se aplicável)
-└── README.md
+│   │       └── application.yml # Configurações da aplicação
+│   └── test/                   # Testes (opcional)
+└── README.md                   # Este arquivo
+```
 
-🚀 Executando o Projeto
+---
 
-1. Clone o repositório
+## ▶️ Executando o Projeto
 
+### 1. Clone o repositório
+
+```bash
 git clone https://github.com/mauricio-theodoro/LojaVirtual.git
 cd LojaVirtual
+```
 
-2. Compile e execute
+### 2. Compile e execute
 
+```bash
 mvn clean install
 mvn spring-boot:run
+```
 
-A aplicação será iniciada na porta 8080. Confira os logs no terminal para ver se as tabelas foram criadas automaticamente.
+A aplicação será iniciada na porta `8080`.
 
-📝 Endpoints da API
+---
 
-× Categoria
+## 🧪 Testando a API
 
-GET /api/v1/categorias — Listar todas as categorias
+Você pode utilizar ferramentas como **Postman** ou **cURL**.
 
-GET /api/v1/categorias/{id} — Buscar categoria por ID
+### 🔹 Endpoints - Categoria
 
-POST /api/v1/categorias — Criar nova categoria
+| Método | Endpoint                             | Descrição                    |
+|--------|--------------------------------------|------------------------------|
+| GET    | `/api/v1/categorias`                 | Listar todas as categorias   |
+| GET    | `/api/v1/categorias/{id}`            | Buscar por ID                |
+| POST   | `/api/v1/categorias`                 | Criar nova categoria         |
+| PUT    | `/api/v1/categorias/{id}`            | Atualizar categoria existente|
+| DELETE | `/api/v1/categorias/{id}`            | Deletar categoria            |
 
+**Exemplo JSON:**
+
+```json
 {
   "nome": "Eletrônicos",
-  "descricao": "Produtos eletrônicos em geral"
+  "descricao": "Categoria destinada a produtos eletrônicos"
 }
+```
 
-PUT /api/v1/categorias/{id} — Atualizar categoria existente
+### 🔹 Endpoints - Produto
 
-DELETE /api/v1/categorias/{id} — Deletar categoria
+| Método | Endpoint                            | Descrição                     |
+|--------|-------------------------------------|-------------------------------|
+| GET    | `/api/v1/produtos`                  | Listar todos os produtos      |
+| GET    | `/api/v1/produtos/{id}`             | Buscar produto por ID         |
+| POST   | `/api/v1/produtos`                  | Criar novo produto            |
+| PUT    | `/api/v1/produtos/{id}`             | Atualizar produto existente   |
+| DELETE | `/api/v1/produtos/{id}`             | Deletar produto               |
 
-📦 Produto
+**Exemplo JSON:**
 
-GET /api/v1/produtos — Listar todos os produtos
-
-GET /api/v1/produtos/{id} — Buscar produto por ID
-
-POST /api/v1/produtos — Criar novo produto
-
+```json
 {
   "nome": "Smartphone XYZ",
   "preco": 1500.0,
   "descricao": "Smartphone com excelentes recursos",
-  "categoria": {
-    "id": 1
-  }
+  "categoria": { "id": 1 }
 }
+```
 
-PUT /api/v1/produtos/{id} — Atualizar produto existente
+---
 
-DELETE /api/v1/produtos/{id} — Deletar produto
+## 📌 Considerações Finais
 
-Use ferramentas como Postman, Insomnia ou cURL para testar os endpoints.
+- Em ambiente de **desenvolvimento**, o `ddl-auto: update` facilita a criação automática das tabelas.
+- Para **produção**, recomenda-se o uso de ferramentas como Flyway ou Liquibase para controle de versionamento de schema.
 
-💡 Considerações Finais
+---
 
-Ambiente de desenvolvimento vs produção: O uso de ddl-auto: update é conveniente para desenvolvimento, mas em produção recomenda-se utilizar ferramentas como Flyway ou Liquibase.
+## 🤝 Contribuindo
 
-Contribuição: A estrutura do projeto está preparada para expansão e manutenção. Fique à vontade para abrir uma issue ou enviar um pull request 🚀.
+Sinta-se à vontade para abrir uma **issue** ou enviar um **Pull Request** com sugestões de melhoria!
 
-Contato: Dúvidas ou sugestões? Entre em contato via GitHub ou abra uma issue neste repositório.
+---
 
-Desenvolvido por Maurício Theodoro
+## 📬 Contato
+
+Caso tenha dúvidas ou sugestões, entre em contato pelo GitHub ou abra uma issue neste repositório.
