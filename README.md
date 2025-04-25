@@ -61,13 +61,6 @@ spring:
         jdbc:
           time_zone: UTC
 
-server:
-  port: 8080
-
-spring:
-  sql:
-    init:
-      mode: always
 ```
 
 > 💡 Substitua `your_password_here` pela sua senha do MariaDB.
