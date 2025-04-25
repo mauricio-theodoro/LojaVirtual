@@ -2,9 +2,9 @@
 
 ## 📌 Descrição
 
-O projeto **Loja Virtual** é uma aplicação web desenvolvida com **Spring Boot** que gerencia produtos e categorias utilizando persistência de dados com **MariaDB**. A aplicação oferece operações CRUD por meio de uma API RESTful e adota boas práticas de arquitetura, com separação entre as camadas de `Controller`, `Service` e `Repository`.
+O projeto **Loja Virtual** é uma aplicação web desenvolvida com **Spring Boot** que gerencia produtos e categorias utilizando persistência de dados com **MariaDB**. A API RESTful oferece operações CRUD completas, estruturada em camadas (_Controller_, _Service_, _Repository_) e utiliza **DTOs** para comunicação, garantindo segurança e controle de serialização.
 
-Este projeto foi criado para fins acadêmicos, com foco na correta aplicação do JPA e integração com banco de dados relacional.
+Este projeto foi desenvolvido para fins acadêmicos, com foco em boas práticas JPA, tratamento centralizado de exceções e arquitetura limpa.
 
 ---
 
@@ -22,19 +22,19 @@ Este projeto foi criado para fins acadêmicos, com foco na correta aplicação d
 
 - Java JDK 11 ou superior
 - Maven instalado
-- MariaDB instalado (pode ser via XAMPP, Docker ou standalone)
+- MariaDB instalado (via XAMPP, Docker ou standalone)
 
 ---
 
 ## 🛠️ Instalação e Configuração
 
-### 1. Instale o MariaDB
+### 1. Instalar o MariaDB
 
-Você pode baixar diretamente do [site oficial do MariaDB](https://mariadb.org/download/) ou instalar via XAMPP (recomendado para iniciantes).
+Baixe pelo [site oficial do MariaDB](https://mariadb.org/download/) ou utilize XAMPP.
 
-### 2. Crie o banco de dados
+### 2. Criar o banco de dados
 
-Acesse o console do MariaDB e execute:
+Conecte-se ao MariaDB e execute:
 
 ```sql
 CREATE DATABASE lojadigitaldb
@@ -42,7 +42,7 @@ CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 ```
 
-### 3. Configure a conexão no `application.yml`
+### 3. Configurar `application.yml`
 
 ```yaml
 spring:
@@ -78,60 +78,60 @@ spring:
 
 ```
 LojaVirtual/
-├── pom.xml                      # Configuração do Maven
-├── mvnw, mvnw.cmd              # Maven Wrapper
-├── .mvn/                       # Configurações do Maven
+├── pom.xml                  # Dependências e plugins do Maven
 ├── src/
 │   ├── main/
-│   │   ├── java/com/lojadigital/
-│   │   │   ├── controller/     # Endpoints REST
-│   │   │   ├── model/          # Entidades JPA
-│   │   │   ├── repository/     # Interfaces do Spring Data
-│   │   │   └── service/        # Lógica de negócio
+│   │   ├── java/com/loja/digital/
+│   │   │   ├── controller/   # Controllers REST
+│   │   │   ├── dto/          # Data Transfer Objects
+│   │   │   ├── exception/    # Exceptions customizadas
+│   │   │   ├── model/        # Entidades JPA
+│   │   │   ├── repository/   # Repositórios JPA
+│   │   │   ├── service/      # Interfaces Service
+│   │   │   └── service/impl/ # Implementações Service
 │   │   └── resources/
-│   │       └── application.yml # Configurações da aplicação
-│   └── test/                   # Testes (opcional)
-└── README.md                   # Este arquivo
+│   │       └── application.yml
+│   └── test/                 # Testes unitários e de integração
+└── README.md                # Documentação do projeto
 ```
 
 ---
 
 ## ▶️ Executando o Projeto
 
-### 1. Clone o repositório
-
-```bash
+1. Clone o repositório
+   ```bash
 git clone https://github.com/mauricio-theodoro/LojaVirtual.git
 cd LojaVirtual
 ```
-
-### 2. Compile e execute
-
-```bash
+2. Compile e execute
+   ```bash
 mvn clean install
 mvn spring-boot:run
 ```
-
-A aplicação será iniciada na porta `8080`.
+A aplicação ficará disponível em `http://localhost:8080`.
 
 ---
 
 ## 🧪 Testando a API
 
-Você pode utilizar ferramentas como **Postman** ou **cURL**.
+Use **Postman** ou **cURL**. A URL base é:
 
-### 🔹 Endpoints - Categoria
+```
+http://localhost:8080/api/v1
+```
 
-| Método | Endpoint                             | Descrição                    |
-|--------|--------------------------------------|------------------------------|
-| GET    | `/api/v1/categorias`                 | Listar todas as categorias   |
-| GET    | `/api/v1/categorias/{id}`            | Buscar por ID                |
-| POST   | `/api/v1/categorias`                 | Criar nova categoria         |
-| PUT    | `/api/v1/categorias/{id}`            | Atualizar categoria existente|
-| DELETE | `/api/v1/categorias/{id}`            | Deletar categoria            |
+### 🔹 Endpoints - Categoria (DTO)
 
-**Exemplo JSON:**
+| Método | Endpoint                       | Descrição                          |
+|--------|--------------------------------|------------------------------------|
+| GET    | `/categorias`                  | Listar todas as categorias         |
+| GET    | `/categorias/{id}`             | Buscar categoria por ID            |
+| POST   | `/categorias`                  | Criar nova categoria               |
+| PUT    | `/categorias/{id}`             | Atualizar categoria existente      |
+| DELETE | `/categorias/{id}`             | Deletar categoria                  |
 
+**Exemplo JSON (CategoriaDTO):**
 ```json
 {
   "nome": "Eletrônicos",
@@ -139,42 +139,48 @@ Você pode utilizar ferramentas como **Postman** ou **cURL**.
 }
 ```
 
-### 🔹 Endpoints - Produto
+### 🔹 Endpoints - Produto (DTO)
 
-| Método | Endpoint                            | Descrição                     |
-|--------|-------------------------------------|-------------------------------|
-| GET    | `/api/v1/produtos`                  | Listar todos os produtos      |
-| GET    | `/api/v1/produtos/{id}`             | Buscar produto por ID         |
-| POST   | `/api/v1/produtos`                  | Criar novo produto            |
-| PUT    | `/api/v1/produtos/{id}`             | Atualizar produto existente   |
-| DELETE | `/api/v1/produtos/{id}`             | Deletar produto               |
+| Método | Endpoint                      | Descrição                          |
+|--------|-------------------------------|------------------------------------|
+| GET    | `/produtos`                   | Listar todos os produtos           |
+| GET    | `/produtos/{id}`              | Buscar produto por ID              |
+| POST   | `/produtos`                   | Criar novo produto                 |
+| PUT    | `/produtos/{id}`              | Atualizar produto existente        |
+| DELETE | `/produtos/{id}`              | Deletar produto                    |
 
-**Exemplo JSON:**
-
+**Exemplo JSON (ProdutoDTO):**
 ```json
 {
   "nome": "Smartphone XYZ",
   "preco": 1500.0,
   "descricao": "Smartphone com excelentes recursos",
-  "categoria": { "id": 1 }
+  "categoriaId": 1
 }
 ```
 
 ---
 
+## ❗ Tratamento de Erros
+
+- **ResourceNotFoundException** → retorna HTTP 404
+- **@ControllerAdvice** para validação retorna HTTP 400 com detalhes
+
+---
+
 ## 📌 Considerações Finais
 
-- Em ambiente de **desenvolvimento**, o `ddl-auto: update` facilita a criação automática das tabelas.
-- Para **produção**, recomenda-se o uso de ferramentas como Flyway ou Liquibase para controle de versionamento de schema.
+- Em **desenvolvimento**, `ddl-auto: update` agiliza mudanças de esquema
+- Em **produção**, use **Flyway** ou **Liquibase** para versionamento de banco
 
 ---
 
 ## 🤝 Contribuindo
 
-Sinta-se à vontade para abrir uma **issue** ou enviar um **Pull Request** com sugestões de melhoria!
+Contribuições são bem-vindas! Abra uma issue ou envie um pull request.
 
 ---
 
 ## 📬 Contato
 
-Caso tenha dúvidas ou sugestões, entre em contato pelo GitHub ou abra uma issue neste repositório.
+Desenvolvido por [Mauricio Theodoro](https://github.com/mauricio-theodoro)
