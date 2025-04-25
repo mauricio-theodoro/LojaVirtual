@@ -170,10 +170,10 @@ http://localhost:8080/api/v1
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! Abra uma issue ou envie um pull request.
+Sinta-se à vontade para abrir uma **issue** ou enviar um **Pull Request** com sugestões de melhoria!
 
 ---
 
 ## 📬 Contato
-
+Caso tenha dúvidas ou sugestões, entre em contato pelo GitHub ou abra uma issue neste repositório.
 Desenvolvido por [Mauricio Theodoro](https://github.com/mauricio-theodoro)
