@@ -1,13 +1,14 @@
 package com.loja.digital.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-
-
+import lombok.Data;
 
 /**
  * A classe Produto representa um produto ofertado na loja digital.
  * Cada produto pertence a uma categoria.
  */
+@Data
 @Entity
 @Table(name = "produtos")
 public class Produto {
@@ -22,9 +23,9 @@ public class Produto {
 
     private String descricao;
 
-    // Mapeamento Many-to-One: Vários produtos podem pertencer a uma única categoria.
     @ManyToOne
     @JoinColumn(name = "categoria_id")
+    @JsonBackReference
     private Categoria categoria;
 
     // Construtor padrão
@@ -79,7 +80,7 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    // Método toString que exibe o nome da Categoria (evitando recursão indireta)
+    // Evita exibir estrutura recursiva completa
     @Override
     public String toString() {
         return "Produto{" +

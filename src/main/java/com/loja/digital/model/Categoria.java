@@ -1,7 +1,8 @@
 package com.loja.digital.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
+import lombok.Data;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import java.util.List;
  * A classe Categoria representa uma categoria de produtos na loja digital.
  * Cada categoria pode ter diversos produtos associados.
  */
+@Data
 @Entity
 @Table(name = "categorias")
 public class Categoria {
@@ -21,8 +23,8 @@ public class Categoria {
 
     private String descricao;
 
-    // Mapeamento One-to-Many: Uma categoria possui muitos produtos.
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Produto> produtos;
 
     // Construtor padrão
@@ -67,7 +69,7 @@ public class Categoria {
         this.produtos = produtos;
     }
 
-    // Método toString para facilitar a exibição da categoria sem recursão com produtos
+    // Evita mostrar os produtos (e possível recursão) no toString
     @Override
     public String toString() {
         return "Categoria{" +
